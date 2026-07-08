@@ -10,27 +10,46 @@ function inicializarBuscador() {
 
 }
 
-function buscarParticipantes(evento) {
+function buscarParticipantes(e) {
 
-    const texto = evento.target.value
-        .trim()
-        .toLowerCase();
+    const texto = e.target.value.trim().toLowerCase();
 
     const resultados = document.getElementById("results");
 
-    if (texto.length === 0) {
+    if (texto === "") {
 
         resultados.innerHTML = "";
-
         return;
 
     }
 
-    const encontrados = state.participantes.filter(participante => {
+    const encontrados = state.participantes.filter(p => {
 
-        return JSON.stringify(participante)
-            .toLowerCase()
-            .includes(texto);
+        return (
+
+            (p["Nombre completo"] || "").toLowerCase().includes(texto) ||
+
+            String(p["N° de cedula o pasaporte"] || "")
+                .toLowerCase()
+                .includes(texto) ||
+
+            (p["Correo electrónico"] || "")
+                .toLowerCase()
+                .includes(texto) ||
+
+            (p["Ciudad - Departamento"] || "")
+                .toLowerCase()
+                .includes(texto) ||
+
+            (p["País"] || "")
+                .toLowerCase()
+                .includes(texto) ||
+
+            (p["Iglesia o ministerio al que pertenece"] || "")
+                .toLowerCase()
+                .includes(texto);
+
+        );
 
     });
 

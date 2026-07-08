@@ -26,19 +26,20 @@ function mostrarResultados(lista) {
 
     if (lista.length === 0) {
 
-        contenedor.innerHTML = `
-            <p>No se encontraron participantes.</p>
-        `;
-
+        contenedor.innerHTML = "<p>No se encontraron participantes.</p>";
         return;
 
     }
 
-    contenedor.innerHTML = lista.map(participante => `
+    contenedor.innerHTML = lista.map(p => `
 
         <div class="card-participante">
 
-            <strong>${participante["Nombre completo"] || "Sin nombre"}</strong>
+            <strong>${p["Nombre completo"]}</strong>
+
+            <br>
+
+            <small>${p["Ciudad - Departamento"]}</small>
 
         </div>
 
