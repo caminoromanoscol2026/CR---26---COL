@@ -7,6 +7,7 @@ function inicializarBuscador() {
     const input = document.getElementById("searchInput");
 
     input.addEventListener("input", buscarParticipantes);
+    input.addEventListener("keyup", buscarParticipantes);
 
 }
 
