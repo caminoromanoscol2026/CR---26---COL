@@ -1,6 +1,15 @@
 // ========================================
 // Buscador de participantes
 // ========================================
+function normalizarTexto(texto) {
+
+    return String(texto)
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .trim();
+
+}
 
 function inicializarBuscador() {
 
@@ -12,7 +21,7 @@ function inicializarBuscador() {
 
 function buscarParticipantes(e) {
 
-    const texto = e.target.value.trim().toLowerCase();
+    const texto = normalizarTexto(e.target.value);
 
     const resultados = document.getElementById("results");
 
@@ -23,23 +32,27 @@ function buscarParticipantes(e) {
 
     const encontrados = state.participantes.filter(p => {
 
-        const nombre = String(p["Nombre completo"] ?? "").toLowerCase();
-        const documento = String(p["N° de cedula o pasaporte"] ?? "").toLowerCase();
-        const correo = String(p["Correo electrónico"] ?? "").toLowerCase();
-        const ciudad = String(p["Ciudad - Departamento"] ?? "").toLowerCase();
-        const pais = String(p["País"] ?? "").toLowerCase();
-        const iglesia = String(p["Iglesia o ministerio al que pertenece"] ?? "").toLowerCase();
+    return (
 
-        return (
-            nombre.includes(texto) ||
-            documento.includes(texto) ||
-            correo.includes(texto) ||
-            ciudad.includes(texto) ||
-            pais.includes(texto) ||
-            iglesia.includes(texto)
-        );
+        normalizarTexto(p.nombre).includes(texto) ||
 
-    });
+        normalizarTexto(p.documento).includes(texto) ||
+
+        normalizarTexto(p.correo).includes(texto) ||
+
+        normalizarTexto(p.ciudad).includes(texto) ||
+
+        normalizarTexto(p.pais).includes(texto) ||
+
+        normalizarTexto(p.iglesia).includes(texto)
+
+    );
+
+});
+
+    encontrados.sort((a, b) =>
+        a.nombre.localeCompare(b.nombre)
+    );
 
     mostrarResultados(encontrados);
 

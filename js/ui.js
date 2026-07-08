@@ -15,40 +15,68 @@ function mostrarBuscador() {
             placeholder="Escriba un nombre..."
         >
 
+        <p id="contadorResultados"></p>
+
         <div id="results"></div>
     `;
 
-
 }
+
 function mostrarResultados(lista) {
 
     const contenedor = document.getElementById("results");
 
+    const contador = document.getElementById("contadorResultados");
+
+    contador.textContent =
+        `${lista.length} participante${lista.length !== 1 ? "s" : ""} encontrado${lista.length !== 1 ? "s" : ""}`;
+
     if (lista.length === 0) {
 
-        contenedor.innerHTML = "<p>No se encontraron participantes.</p>";
+        contenedor.innerHTML = `
+            <div class="sin-resultados">
+                No se encontraron participantes
+            </div>
+        `;
+
         return;
 
     }
 
     contenedor.innerHTML = lista.map(p => `
 
-        <div class="card-participante" onclick="mostrarFicha(${state.participantes.indexOf(p)})">
+        <div class="card-participante"
+             onclick="mostrarFicha('${p.id}')">
 
-            <strong>${p["Nombre completo"]}</strong>
+            <div class="nombre">
+                👤 ${p.nombre}
+            </div>
 
-            <br>
+            <div class="info">
+                📍 ${p.ciudad}
+            </div>
 
-            <small>${p["Ciudad - Departamento"]}</small>
+            <div class="info">
+                🌎 ${p.pais}
+            </div>
+
+            <div class="info">
+                ⛪ ${p.iglesia || "Sin iglesia"}
+            </div>
+
+            <div class="documento">
+                🪪 ${p.documento}
+            </div>
 
         </div>
 
     `).join("");
 
 }
-function mostrarFicha(indice) {
 
-    const p = state.participantes[indice];
+function mostrarFicha(id) {
+
+    const p = state.participantes.find(x => x.id === id);
 
     const app = document.getElementById("app");
 
@@ -56,25 +84,27 @@ function mostrarFicha(indice) {
 
         <button id="btnVolver">← Volver</button>
 
-        <h2>${p["Nombre completo"]}</h2>
+        <h2>${p.nombre}</h2>
 
         <hr>
 
-        <p><strong>Documento:</strong><br>${p["N° de cedula o pasaporte"]}</p>
+        <p><strong>Documento:</strong><br>${p.documento}</p>
 
-        <p><strong>Edad:</strong><br>${p["Edad"]}</p>
+        <p><strong>Edad:</strong><br>${p.edad}</p>
 
-        <p><strong>Sexo:</strong><br>${p["Sexo"]}</p>
+        <p><strong>Sexo:</strong><br>${p.sexo}</p>
 
-        <p><strong>País:</strong><br>${p["País"]}</p>
+        <p><strong>País:</strong><br>${p.pais}</p>
 
-        <p><strong>Ciudad:</strong><br>${p["Ciudad - Departamento"]}</p>
+        <p><strong>Ciudad:</strong><br>${p.ciudad}</p>
 
-        <p><strong>Iglesia:</strong><br>${p["Iglesia o ministerio al que pertenece"]}</p>
+        <p><strong>Iglesia:</strong><br>${p.iglesia}</p>
 
-        <p><strong>Teléfono:</strong><br>${p["Teléfono"]}</p>
+        <p><strong>Teléfono:</strong><br>${p.telefono || "-"}</p>
 
-        <p><strong>Correo:</strong><br>${p["Correo electrónico"]}</p>
+        <p><strong>Correo:</strong><br>${p.correo}</p>
+
+        <p><strong>Condición médica:</strong><br>${p.condicionMedica || "-"}</p>
 
     `;
 
