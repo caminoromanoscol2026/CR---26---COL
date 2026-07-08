@@ -118,3 +118,21 @@ function mostrarFicha(id) {
         });
 
 }
+
+function mostrarPantallaCarga() {
+
+    const app = document.getElementById("app");
+
+    app.innerHTML = `
+        <div class="pantalla-carga">
+
+            <div class="spinner"></div>
+
+            <h2>Cargando participantes...</h2>
+
+            <p>Por favor espere unos segundos.</p>
+
+        </div>
+    `;
+
+}

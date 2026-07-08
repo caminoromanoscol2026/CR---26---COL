@@ -9,6 +9,8 @@ async function iniciarApp() {
 
     console.log("🚀 Iniciando aplicación...");
 
+    mostrarPantallaCarga();
+
     try {
 
         // Cargar participantes desde la API
