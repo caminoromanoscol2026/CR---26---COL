@@ -18,7 +18,13 @@ function mostrarBuscador() {
         <p id="contadorResultados"></p>
 
         <div id="results"></div>
+
+        ${mostrarMenu()}
     `;
+
+    document
+        .getElementById("btnDashboard")
+        .addEventListener("click", mostrarDashboard);
 
 }
 
@@ -45,8 +51,7 @@ function mostrarResultados(lista) {
 
     contenedor.innerHTML = lista.map(p => `
 
-        <div class="card-participante"
-             onclick="mostrarFicha('${p.id}')">
+        <div class="card-participante" onclick="mostrarFicha('${p.id}')">
 
             <div class="nombre">
                 👤 ${p.nombre}
@@ -76,6 +81,8 @@ function mostrarResultados(lista) {
 
 function mostrarFicha(id) {
 
+    state.scrollY = window.scrollY;
+
     const p = state.participantes.find(x => x.id === id);
 
     const app = document.getElementById("app");
@@ -88,23 +95,50 @@ function mostrarFicha(id) {
 
         <hr>
 
-        <p><strong>Documento:</strong><br>${p.documento}</p>
+        <div class="ficha-campo">
+            <strong>Documento</strong>
+            ${p.documento}
+        </div>
 
-        <p><strong>Edad:</strong><br>${p.edad}</p>
+        <div class="ficha-campo">
+            <strong>Edad</strong>
+            ${p.edad}
+        </div>
 
-        <p><strong>Sexo:</strong><br>${p.sexo}</p>
+        <div class="ficha-campo">
+            <strong>Sexo</strong>
+            ${p.sexo}
+        </div>
 
-        <p><strong>País:</strong><br>${p.pais}</p>
+        <div class="ficha-campo">
+            <strong>País</strong>
+            ${p.pais}
+        </div>
 
-        <p><strong>Ciudad:</strong><br>${p.ciudad}</p>
+        <div class="ficha-campo">
+            <strong>Ciudad</strong>
+            ${p.ciudad}
+        </div>
 
-        <p><strong>Iglesia:</strong><br>${p.iglesia}</p>
+        <div class="ficha-campo">
+            <strong>Iglesia</strong>
+            ${p.iglesia || "-"}
+        </div>
 
-        <p><strong>Teléfono:</strong><br>${p.telefono || "-"}</p>
+        <div class="ficha-campo">
+            <strong>Teléfono</strong>
+            ${p.telefono || "-"}
+        </div>
 
-        <p><strong>Correo:</strong><br>${p.correo}</p>
+        <div class="ficha-campo">
+            <strong>Correo</strong>
+            ${p.correo || "-"}
+        </div>
 
-        <p><strong>Condición médica:</strong><br>${p.condicionMedica || "-"}</p>
+        <div class="ficha-campo">
+            <strong>Condición médica</strong>
+            ${p.condicionMedica || "-"}
+        </div>
 
     `;
 
@@ -113,7 +147,20 @@ function mostrarFicha(id) {
         .addEventListener("click", () => {
 
             mostrarBuscador();
+
             inicializarBuscador();
+
+            const input = document.getElementById("searchInput");
+
+            input.value = state.busqueda;
+
+            if (state.resultados.length > 0) {
+                mostrarResultados(state.resultados);
+            }
+
+            setTimeout(() => {
+                window.scrollTo(0, state.scrollY);
+            }, 0);
 
         });
 
@@ -131,6 +178,24 @@ function mostrarPantallaCarga() {
             <h2>Cargando participantes...</h2>
 
             <p>Por favor espere unos segundos.</p>
+
+        </div>
+    `;
+
+}
+
+function mostrarMenu() {
+
+    return `
+        <div class="menu">
+
+            <button id="btnBuscar">
+                🔍 Buscar
+            </button>
+
+            <button id="btnDashboard">
+                📊 Dashboard
+            </button>
 
         </div>
     `;

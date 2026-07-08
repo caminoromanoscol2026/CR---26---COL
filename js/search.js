@@ -22,7 +22,7 @@ function inicializarBuscador() {
 function buscarParticipantes(e) {
 
     const texto = normalizarTexto(e.target.value);
-
+    state.busqueda = e.target.value;
     const resultados = document.getElementById("results");
 
     if (texto === "") {
@@ -53,7 +53,7 @@ function buscarParticipantes(e) {
     encontrados.sort((a, b) =>
         a.nombre.localeCompare(b.nombre)
     );
-
+    state.resultados = encontrados;
     mostrarResultados(encontrados);
 
 }
