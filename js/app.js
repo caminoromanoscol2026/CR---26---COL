@@ -13,11 +13,20 @@ async function iniciarApp() {
 
         state.participantes = await obtenerParticipantes();
 
-        console.log(`✅ ${state.participantes.length} participantes cargados`);
+console.log(`✅ ${state.participantes.length} participantes cargados`);
 
-        mostrarBuscador();
+const app = document.getElementById("app");
 
-        inicializarBuscador();
+app.innerHTML = `
+    <div style="padding:15px;background:#e8f5e9;border:1px solid #4caf50;margin-bottom:20px;">
+        <strong>Diagnóstico</strong><br>
+        Participantes cargados: ${state.participantes.length}
+    </div>
+`;
+
+mostrarBuscador();
+
+inicializarBuscador();
 
     } catch (error) {
 
