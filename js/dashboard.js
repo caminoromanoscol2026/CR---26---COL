@@ -103,97 +103,79 @@ function barra(valor, total) {
 
 function mostrarDashboard() {
 
-    const e = obtenerEstadisticas();
+    const total = state.participantes.length;
 
-    const app = document.getElementById("app");
+    const hombres = state.participantes.filter(p => p.sexo === "Masculino").length;
 
-    app.innerHTML = `
+    const mujeres = state.participantes.filter(p => p.sexo === "Femenino").length;
 
-        <h2>📊 Dashboard</h2>
+    const ciudades = {};
+
+    state.participantes.forEach(p => {
+
+        ciudades[p.ciudad] = (ciudades[p.ciudad] || 0) + 1;
+
+    });
+
+    const topCiudades = Object.entries(ciudades)
+        .sort((a,b)=>b[1]-a[1])
+        .slice(0,5);
+
+    document.getElementById("app").innerHTML = `
+
+        <section class="page-header">
+
+    <div class="page-title">
+
+        <i class="fa-solid fa-chart-line"></i>
+
+        <div>
+
+            <h2>Dashboard</h2>
+
+            <p>Resumen general del evento</p>
+
+        </div>
+
+    </div>
+
+</section>
 
         <div class="dashboard-grid">
 
-            <div class="dashboard-card grande">
+            <div class="metric-card">
 
-                <div class="dashboard-icon">👥</div>
+                <div class="metric-value">${total}</div>
 
-                <div class="dashboard-numero">
-                    ${e.total}
-                </div>
-
-                <div class="dashboard-titulo">
-                    Participantes registrados
-                </div>
+                <div class="metric-label">Participantes</div>
 
             </div>
 
-            <div class="dashboard-card">
+            <div class="metric-card">
 
-                <div class="dashboard-icon">👨</div>
+                <div class="metric-value">${hombres}</div>
 
-                <div class="dashboard-numero">
-                    ${e.hombres}
-                </div>
-
-                <div class="dashboard-titulo">
-                    Hombres
-                </div>
+                <div class="metric-label">Hombres</div>
 
             </div>
 
-            <div class="dashboard-card">
+            <div class="metric-card">
 
-                <div class="dashboard-icon">👩</div>
+                <div class="metric-value">${mujeres}</div>
 
-                <div class="dashboard-numero">
-                    ${e.mujeres}
-                </div>
-
-                <div class="dashboard-titulo">
-                    Mujeres
-                </div>
+                <div class="metric-label">Mujeres</div>
 
             </div>
 
         </div>
 
-        <div class="dashboard-seccion">
+        <div class="dashboard-section">
 
-            <h3>👨 Hombres</h3>
+            <h3>Ciudades con más participantes</h3>
 
-            ${barra(e.hombres, e.total)}
+            ${topCiudades.map(c=>`
 
-            <h3>👩 Mujeres</h3>
-
-            ${barra(e.mujeres, e.total)}
-
-        </div>
-
-        <div class="dashboard-seccion">
-
-            <h3>🎂 Distribución por edades</h3>
-
-            ${Object.entries(e.edades).map(([rango, cantidad]) => `
-
-                <div class="dashboard-item">
-
-                    <span>${rango}</span>
-
-                    <strong>${cantidad}</strong>
-
-                </div>
-
-            `).join("")}
-
-        </div>
-
-        <div class="dashboard-seccion">
-
-            <h3>📍 Top ciudades</h3>
-
-            ${e.topCiudades.map(c => `
-
-                <div class="dashboard-item">
+                <div class="city-row">
 
                     <span>${c[0]}</span>
 
@@ -216,22 +198,6 @@ function mostrarDashboard() {
             mostrarBuscador();
 
             inicializarBuscador();
-
-            const input = document.getElementById("searchInput");
-
-            input.value = state.busqueda;
-
-            if (state.resultados.length > 0) {
-
-                mostrarResultados(state.resultados);
-
-            }
-
-            setTimeout(() => {
-
-                window.scrollTo(0, state.scrollY);
-
-            }, 0);
 
         });
 

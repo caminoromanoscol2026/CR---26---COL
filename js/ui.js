@@ -51,14 +51,22 @@ function mostrarResultados(lista) {
     const contador = document.getElementById("contadorResultados");
 
     contador.textContent =
-        `${lista.length} participante${lista.length !== 1 ? "s" : ""} encontrado${lista.length !== 1 ? "s" : ""}`;
+        `${lista.length} participante${lista.length !== 1 ? "s" : ""}`;
 
     if (lista.length === 0) {
 
         contenedor.innerHTML = `
-            <div class="sin-resultados">
-                No se encontraron participantes
+
+            <div class="empty-state">
+
+                <i class="fa-regular fa-face-smile"></i>
+
+                <h3>Sin resultados</h3>
+
+                <p>No encontramos participantes con esa búsqueda.</p>
+
             </div>
+
         `;
 
         return;
@@ -67,26 +75,54 @@ function mostrarResultados(lista) {
 
     contenedor.innerHTML = lista.map(p => `
 
-        <div class="card-participante" onclick="mostrarFicha('${p.id}')">
+        <div class="card-participante"
 
-            <div class="nombre">
-                ${p.nombre}
+            onclick="mostrarFicha('${p.id}')">
+
+            <div class="card-top">
+
+                <div>
+
+                    <div class="nombre">
+
+                        ${p.nombre}
+
+                    </div>
+
+                    <div class="card-subtitle">
+
+                        ${p.ciudad}
+
+                    </div>
+
+                </div>
+
+                <div class="edad">
+
+                    ${p.edad}
+
+                </div>
+
             </div>
 
-            <div class="info">
-                ${p.ciudad}
-            </div>
+            <div class="card-footer">
 
-            <div class="info">
-                ${p.pais}
-            </div>
+                <span>
 
-            <div class="info">
-                ${p.iglesia || "Sin iglesia"}
-            </div>
+                    <i class="fa-solid fa-location-dot"></i>
 
-            <div class="documento">
-                ${p.documento}
+                    ${p.pais}
+
+                </span>
+
+                <span>
+
+                    <i class="fa-solid fa-building-columns"></i>
+
+                    ${p.iglesia || "Sin iglesia"}
+
+                </span>
+
             </div>
 
         </div>
@@ -94,7 +130,6 @@ function mostrarResultados(lista) {
     `).join("");
 
 }
-
 function mostrarFicha(id) {
 
     state.scrollY = window.scrollY;
