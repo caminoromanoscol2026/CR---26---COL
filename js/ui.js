@@ -7,19 +7,35 @@ function mostrarBuscador() {
     const app = document.getElementById("app");
 
     app.innerHTML = `
-        <h2>Buscar participante</h2>
 
-        <input
-            type="text"
-            id="searchInput"
-            placeholder="Escriba un nombre..."
-        >
+        <section class="hero">
+
+            <h2>Participantes</h2>
+
+            <p>
+                Busque por nombre, ciudad o documento.
+            </p>
+
+        </section>
+
+        <div class="search-box">
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            <input
+                id="searchInput"
+                type="text"
+                placeholder="Buscar participante..."
+                autocomplete="off">
+
+        </div>
 
         <p id="contadorResultados"></p>
 
         <div id="results"></div>
 
         ${mostrarMenu()}
+
     `;
 
     document
@@ -54,23 +70,23 @@ function mostrarResultados(lista) {
         <div class="card-participante" onclick="mostrarFicha('${p.id}')">
 
             <div class="nombre">
-                👤 ${p.nombre}
+                ${p.nombre}
             </div>
 
             <div class="info">
-                📍 ${p.ciudad}
+                ${p.ciudad}
             </div>
 
             <div class="info">
-                🌎 ${p.pais}
+                ${p.pais}
             </div>
 
             <div class="info">
-                ⛪ ${p.iglesia || "Sin iglesia"}
+                ${p.iglesia || "Sin iglesia"}
             </div>
 
             <div class="documento">
-                🪪 ${p.documento}
+                ${p.documento}
             </div>
 
         </div>
@@ -89,55 +105,33 @@ function mostrarFicha(id) {
 
     app.innerHTML = `
 
-        <button id="btnVolver">← Volver</button>
+        <button id="btnVolver">
+            <i class="fa-solid fa-arrow-left"></i>
+            Volver
+        </button>
 
         <h2>${p.nombre}</h2>
 
-        <hr>
+        <div class="ficha-card">
 
-        <div class="ficha-campo">
-            <strong>Documento</strong>
-            ${p.documento}
-        </div>
+            ${fila("fa-id-card","Documento",p.documento)}
 
-        <div class="ficha-campo">
-            <strong>Edad</strong>
-            ${p.edad}
-        </div>
+            ${fila("fa-cake-candles","Edad",p.edad)}
 
-        <div class="ficha-campo">
-            <strong>Sexo</strong>
-            ${p.sexo}
-        </div>
+            ${fila("fa-user","Sexo",p.sexo)}
 
-        <div class="ficha-campo">
-            <strong>País</strong>
-            ${p.pais}
-        </div>
+            ${fila("fa-earth-americas","País",p.pais)}
 
-        <div class="ficha-campo">
-            <strong>Ciudad</strong>
-            ${p.ciudad}
-        </div>
+            ${fila("fa-location-dot","Ciudad",p.ciudad)}
 
-        <div class="ficha-campo">
-            <strong>Iglesia</strong>
-            ${p.iglesia || "-"}
-        </div>
+            ${fila("fa-church","Iglesia",p.iglesia || "-")}
 
-        <div class="ficha-campo">
-            <strong>Teléfono</strong>
-            ${p.telefono || "-"}
-        </div>
+            ${fila("fa-phone","Teléfono",p.telefono || "-")}
 
-        <div class="ficha-campo">
-            <strong>Correo</strong>
-            ${p.correo || "-"}
-        </div>
+            ${fila("fa-envelope","Correo",p.correo)}
 
-        <div class="ficha-campo">
-            <strong>Condición médica</strong>
-            ${p.condicionMedica || "-"}
+            ${fila("fa-heart-pulse","Condición médica",p.condicionMedica || "-")}
+
         </div>
 
     `;
@@ -155,17 +149,42 @@ function mostrarFicha(id) {
             input.value = state.busqueda;
 
             if (state.resultados.length > 0) {
+
                 mostrarResultados(state.resultados);
+
             }
 
             setTimeout(() => {
+
                 window.scrollTo(0, state.scrollY);
+
             }, 0);
 
         });
 
 }
 
+function fila(icono,titulo,valor){
+
+    return `
+
+        <div class="ficha-item">
+
+            <div class="ficha-left">
+
+                <i class="fa-solid ${icono}"></i>
+
+                <span class="ficha-label">${titulo}</span>
+
+            </div>
+
+            <span class="ficha-value">${valor}</span>
+
+        </div>
+
+    `;
+
+}
 function mostrarPantallaCarga() {
 
     const app = document.getElementById("app");
@@ -187,17 +206,27 @@ function mostrarPantallaCarga() {
 function mostrarMenu() {
 
     return `
-        <div class="menu">
 
-            <button id="btnBuscar">
-                🔍 Buscar
+        <nav class="bottom-bar">
+
+            <button id="btnBuscar" class="bottom-btn">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <span>Buscar</span>
+
             </button>
 
-            <button id="btnDashboard">
-                📊 Dashboard
+            <button id="btnDashboard" class="bottom-btn">
+
+                <i class="fa-solid fa-chart-simple"></i>
+
+                <span>Dashboard</span>
+
             </button>
 
-        </div>
+        </nav>
+
     `;
 
 }
