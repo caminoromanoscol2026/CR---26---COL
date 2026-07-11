@@ -76,7 +76,7 @@ function normalizarParticipantes(datos) {
 
     return datos.map((p, i) => ({
 
-        id: String(i + 1),
+        id: (p["N° de cedula o pasaporte"] || "").toString().trim(),
 
         nombre: p["Nombre completo"] || "",
 
