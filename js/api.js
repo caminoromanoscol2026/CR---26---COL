@@ -3,7 +3,7 @@
 // ========================================
 
 const API_URL =
-"https://script.google.com/macros/s/AKfycbx1PYK_Y0bioI92u-utPy_m8hq5CUgfA2Yagdf-2e0thacsWdsomxMHkYlpYv0drhTb/exec";
+"https://script.google.com/macros/s/AKfycbxi_r7rxkozzaCmWw-bdMdbDdtBRZn3x6BazOiFsUx5sdD8hItjiLth3ZcCZ3deoQI-/exec";
 
 const CACHE_KEY = "CR26_CACHE_V1";
 
