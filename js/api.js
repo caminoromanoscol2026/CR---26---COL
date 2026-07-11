@@ -1,60 +1,106 @@
 // ========================================
-// API - Camino Romanos Colombia
+// API
 // ========================================
 
-const API_URL = "https://script.google.com/macros/s/AKfycbxhtQmLSIMAlSETDNFcFM7ExVzMuJFYTORnHejJXp6t1TENmodtgfiKCOwFrAtxekIf/exec";
+const API_URL =
+"https://script.google.com/macros/s/AKfycbx1PYK_Y0bioI92u-utPy_m8hq5CUgfA2Yagdf-2e0thacsWdsomxMHkYlpYv0drhTb/exec";
+
+const CACHE_KEY = "CR26_CACHE_V1";
+
+// ========================================
 
 async function obtenerParticipantes() {
 
-    console.log("🌐 Descargando participantes...");
+    const cache = localStorage.getItem(CACHE_KEY);
 
-    const respuesta = await fetch(API_URL);
+    if (cache) {
 
-    if (!respuesta.ok) {
-        throw new Error("No se pudieron obtener los participantes.");
+        console.log("📦 Cargando desde caché...");
+
+        // Actualizamos en segundo plano
+        actualizarCache();
+
+        return JSON.parse(cache);
+
     }
 
-    const datos = await respuesta.json();
+    console.log("🌐 Primera descarga...");
 
-    console.log(`📥 ${datos.length} registros recibidos`);
-
-    return datos.map(normalizarParticipante);
+    return await actualizarCache();
 
 }
 
-function normalizarParticipante(p) {
+// ========================================
 
-    return {
+async function actualizarCache() {
 
-        id: String(p["N° de cedula o pasaporte"] ?? ""),
+    const response = await fetch(
 
-        nombre: String(p["Nombre completo"] ?? ""),
+        API_URL + "?t=" + Date.now(),
 
-        documento: String(p["N° de cedula o pasaporte"] ?? ""),
+        {
 
-        correo: String(p["Correo electrónico"] ?? ""),
+            cache: "no-store"
 
-        edad: Number(p["Edad"] ?? 0),
+        }
 
-        sexo: String(p["Sexo"] ?? ""),
+    );
 
-        pais: String(p["Pais"] ?? p["País"] ?? ""),
+    if (!response.ok) {
 
-        ciudad: String(p["Ciudad - Departamento"] ?? ""),
+        throw new Error("No se pudieron descargar los participantes.");
 
-        iglesia: String(p["Iglesia o ministerio al que pertenece"] ?? ""),
+    }
 
-        telefono: String(p["Número de celular"] ?? p["Telefono"] ?? ""),
+    const json = await response.json();
 
-        condicionMedica: String(
-            p["¿Tiene alguna condición medica o alimentaria que debamos conocer?"] ??
+    const participantes = normalizarParticipantes(json);
+
+    localStorage.setItem(
+
+        CACHE_KEY,
+
+        JSON.stringify(participantes)
+
+    );
+
+    console.log("✅ Caché actualizada");
+
+    return participantes;
+
+}
+
+// ========================================
+
+function normalizarParticipantes(datos) {
+
+    return datos.map((p, i) => ({
+
+        id: String(i + 1),
+
+        nombre: p["Nombre completo"] || "",
+
+        documento: p["N° de cedula o pasaporte"] || "",
+
+        edad: Number(p["Edad"]) || 0,
+
+        sexo: p["Sexo"] || "",
+
+        pais: p["Pais"] || p["País"] || "",
+
+        ciudad: p["Ciudad - Departamento"] || "",
+
+        iglesia: p["Iglesia o ministerio al que pertenece"] || "",
+
+        telefono: p["Teléfono"] || "",
+
+        correo: p["Correo electrónico"] || "",
+
+        condicionMedica:
+            p["¿Tiene alguna condición medica o alimentaria que debamos conocer?"] ||
+            p["Condición médica"] ||
             ""
-        ),
 
-        timestamp: String(p["Marca temporal"] ?? ""),
-
-        checkin: false
-
-    };
+    }));
 
 }

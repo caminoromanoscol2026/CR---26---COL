@@ -59,11 +59,11 @@ function mostrarResultados(lista) {
 
             <div class="empty-state">
 
-                <i class="fa-regular fa-face-smile"></i>
+                <i class="fa-solid fa-user-slash"></i>
 
                 <h3>Sin resultados</h3>
 
-                <p>No encontramos participantes con esa búsqueda.</p>
+                <p>No encontramos participantes.</p>
 
             </div>
 
@@ -75,53 +75,42 @@ function mostrarResultados(lista) {
 
     contenedor.innerHTML = lista.map(p => `
 
-        <div class="card-participante"
-
+        <div class="participant-card"
             onclick="mostrarFicha('${p.id}')">
 
-            <div class="card-top">
+            <div class="participant-avatar">
 
-                <div>
+                ${p.nombre.charAt(0).toUpperCase()}
 
-                    <div class="nombre">
+            </div>
 
-                        ${p.nombre}
+            <div class="participant-body">
 
-                    </div>
+                <div class="participant-name">
 
-                    <div class="card-subtitle">
-
-                        ${p.ciudad}
-
-                    </div>
+                    ${p.nombre}
 
                 </div>
 
-                <div class="edad">
+                <div class="participant-location">
 
-                    ${p.edad}
+                    <i class="fa-solid fa-location-dot"></i>
+
+                    ${p.ciudad}
+
+                </div>
+
+                <div class="participant-church">
+
+                    ${p.iglesia || "Sin iglesia"}
 
                 </div>
 
             </div>
 
-            <div class="card-footer">
+            <div class="participant-age">
 
-                <span>
-
-                    <i class="fa-solid fa-location-dot"></i>
-
-                    ${p.pais}
-
-                </span>
-
-                <span>
-
-                    <i class="fa-solid fa-building-columns"></i>
-
-                    ${p.iglesia || "Sin iglesia"}
-
-                </span>
+                ${p.edad}
 
             </div>
 
